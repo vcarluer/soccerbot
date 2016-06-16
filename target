@@ -1,0 +1,42 @@
+Création de comportement de joueurs
+Affectation des comportements aux joueurs d'un match
+Résolution du match
+
+GUI?
+
+== Pendant la partie ==
+Coordonnées réelles
+Fond vert
+Rectangle blanc contours du terrain
+Centre (ligne cercle)
+Surfaces de réparation
+Rectangles cage
+Ronds bleus et rouges
+Score
+Temps
+Nom des équipes
+Nom des joueurs
+
+Nombre de joueurs ?
+
+== Principe de simulation ==
+Déplacer (point cible)
+Tirer (Puissance, point cible)
+Appel de passe (flag)
+Collisions:
+* Entre joueurs : mur pour le 2ème
+* Avec ballon : lève évènement (par défaut tir pas loin dans la direction du déplacement)
+* Avec les bords : remise en jeu, rebond, touche, stop ?
+* centre du ballon avec la ligne de but : But
+
+== API ==
+Position, direction, vitesse, du ballon
+Position, direction, vitesse, des joueurs
+Position du terrain, des cages
+Déplacer joueur en cours
+S'arrêter
+Tirer
+Faire un appel
+
+== Dessin ==
+canvas 2d
