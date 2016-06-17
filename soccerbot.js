@@ -7,7 +7,7 @@ var defaults = {
 defaults.fieldH =  defaults.fieldW * defaults.fieldRatio;
 defaults.ratioPixel = defaults.fieldW / 105;
 
-var div, canvasBkg, contextBkg, canvas, context;
+var div, canvasBkg, contextBkg, canvas, context, canvasBuffer, contextBuffer;
    
    
 var players = [];
@@ -26,6 +26,10 @@ function load() {
   canvas.height = defaults.fieldH;
   context = canvas.getContext('2d');
   div.appendChild(canvas);
+  canvasBuffer = document.createElement('canvas');
+  canvasBuffer.width = defaults.fieldW;;
+  canvasBuffer.height = defaults.fieldH;
+  contextBuffer = canvasBuffer.getContext('2d');
 
      var player = {
        x: 100,
@@ -48,11 +52,14 @@ function renderBackground() {
 
 function tick() {
   window.requestAnimationFrame(tick);
-  context.clearRect(0, 0, defaults.fieldW, defaults.fieldH);
+  contextBuffer.clearRect(0, 0, defaults.fieldW, defaults.fieldH);
   players.forEach(function(player) {
     player.step();
-    drawPlayer(player);
+    drawPlayer(player, contextBuffer);
   });
+  
+  context.clearRect(0, 0, defaults.fieldW, defaults.fieldH);
+  context.drawImage(canvasBuffer, 0, 0);
 }
 
 function drawField(cont) {
@@ -96,20 +103,20 @@ function drawField(cont) {
   cont.stroke();
 }
 
-function drawPlayer (player){    
+function drawPlayer (player, cont){    
   var radius = 10;
   
-  context.beginPath();
-  context.arc(player.x, player.y, radius,0, 2 * Math.PI);
-  context.lineWidth = 2;
+  cont.beginPath();
+  cont.arc(player.x, player.y, radius,0, 2 * Math.PI);
+  cont.lineWidth = 2;
   
-  context.fillStyle = player.color;
-  context.fill();
+  cont.fillStyle = player.color;
+  cont.fill();
   
   
   // line color
-  context.strokeStyle = 'black';
-  context.stroke();
+  cont.strokeStyle = 'black';
+  cont.stroke();
 }
 
 function ready(fn) {
