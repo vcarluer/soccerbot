@@ -11,6 +11,9 @@ var div, canvasBkg, contextBkg, canvas, context, canvasBuffer, contextBuffer;
    
    
 var players = [];
+var ball;
+var items = [];
+var lastTick;
 
 function load() {
   div = document.getElementById('soccerbot');
@@ -41,8 +44,18 @@ function load() {
      };
      
      players.push(player);
+     items.push(player);
+     
+     ball = {
+       x: defaults.fieldW / 2,
+       y: defaults.fieldH / 2,
+       color: 'white'
+     }
+     
+     items.push(ball);
      
     renderBackground();
+    lastTick = Date.now();
     window.requestAnimationFrame(tick);
 }
 
@@ -52,10 +65,14 @@ function renderBackground() {
 
 function tick() {
   window.requestAnimationFrame(tick);
+  var delta = Date.now() - lastTick;
+  lastTick = Date.now();
   contextBuffer.clearRect(0, 0, defaults.fieldW, defaults.fieldH);
-  players.forEach(function(player) {
-    player.step();
-    drawPlayer(player, contextBuffer);
+  items.forEach(function(item) {
+    if (item.step) {
+      item.step(delta); 
+    }
+    drawItem(item, contextBuffer);
   });
   
   context.clearRect(0, 0, defaults.fieldW, defaults.fieldH);
@@ -103,14 +120,14 @@ function drawField(cont) {
   cont.stroke();
 }
 
-function drawPlayer (player, cont){    
+function drawItem (item, cont){    
   var radius = 10;
   
   cont.beginPath();
-  cont.arc(player.x, player.y, radius,0, 2 * Math.PI);
+  cont.arc(item.x, item.y, radius,0, 2 * Math.PI);
   cont.lineWidth = 2;
   
-  cont.fillStyle = player.color;
+  cont.fillStyle = item.color;
   cont.fill();
   
   
