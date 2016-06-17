@@ -49,7 +49,8 @@ function load() {
      ball = {
        x: defaults.fieldW / 2,
        y: defaults.fieldH / 2,
-       color: 'white'
+       color: 'white',
+       radius: 8
      }
      
      items.push(ball);
@@ -121,7 +122,7 @@ function drawField(cont) {
 }
 
 function drawItem (item, cont){    
-  var radius = 10;
+  var radius = item.radius || 10;
   
   cont.beginPath();
   cont.arc(item.x, item.y, radius,0, 2 * Math.PI);
