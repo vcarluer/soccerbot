@@ -93,11 +93,22 @@ function drawField(cont) {
     w: 16.5 * defaults.ratioPixel,
     h: 40.3 * defaults.ratioPixel
   };
+  var sixmSize = {
+    w: 5.5 * defaults.ratioPixel,
+    h: 2 * 5.5 * defaults.ratioPixel + goalSize.h
+  };
+  
   
   var halfWidth = parseInt(defaults.screenW / 2);
   var halfHeight = parseInt(defaults.screenH / 2);
   
+  var penaltyPoint = {
+    x: defaults.goalW + 11 * defaults.ratioPixel,
+    y: halfHeight
+  }
+  
   var halfSeizeH = halfHeight - seizemSize.h / 2;
+  var halfSixH = halfHeight - sixmSize.h / 2;
   
   // Bkg
   cont.fillStyle = defaults.fieldColor ;
@@ -130,6 +141,15 @@ function drawField(cont) {
   cont.rect(defaults.screenW - seizemSize.w - defaults.goalW,halfSeizeH,seizemSize.w, seizemSize.h);
   cont.stroke();
   
+  // 6m
+  cont.beginPath();
+  cont.rect(defaults.goalW,halfSixH,sixmSize.w, sixmSize.h);
+  cont.stroke();
+  
+  cont.beginPath();
+  cont.rect(defaults.screenW - sixmSize.w - defaults.goalW,halfSixH,sixmSize.w, sixmSize.h);
+  cont.stroke();
+  
   // goals
   cont.beginPath();
   cont.rect(0,halfHeight - parseInt(goalSize.h / 2),defaults.goalW, goalSize.h);
@@ -137,6 +157,22 @@ function drawField(cont) {
   
   cont.beginPath();
   cont.rect(defaults.screenW - defaults.goalW,halfHeight - parseInt(goalSize.h / 2),defaults.goalW, goalSize.h);
+  cont.stroke();
+  
+  cont.beginPath();
+  cont.arc(penaltyPoint.x, penaltyPoint.y, radiusCenter, -1.05, 1.05, false);
+  cont.stroke();
+  
+  cont.beginPath();
+  cont.arc(penaltyPoint.x, penaltyPoint.y, 1, 0, 2 * Math.PI);
+  cont.stroke();
+  
+  cont.beginPath();
+  cont.arc(defaults.screenW - penaltyPoint.x, penaltyPoint.y, radiusCenter, Math.PI + 1.05, Math.PI - 1.05, true);
+  cont.stroke();
+  
+  cont.beginPath();
+  cont.arc(defaults.screenW - penaltyPoint.x, penaltyPoint.y, 1, 0, 2 * Math.PI);
   cont.stroke();
 }
 
