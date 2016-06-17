@@ -45,17 +45,17 @@ function load() {
        step : function() {
          //this.x++;
          return {
-           x : this.x +1,
-           y : this.y
+           moveTo :  {
+            x : this.x +1,
+            y : this.y
+           }
          }
        },
        apply : function(instruction) {
-         if(instruction.x) {
-           this.x = instruction.x;
+         if(instruction.moveTo) {
+           this.x = instruction.moveTo.x;
+           this.y = instruction.moveTo.y;
          }
-         if(instruction.x) {
-           this.y = instruction.y;
-         }         
        }
      };
      
