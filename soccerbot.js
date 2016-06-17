@@ -7,15 +7,25 @@ var defaults = {
 defaults.fieldH =  defaults.fieldW * defaults.fieldRatio;
 defaults.ratioPixel = defaults.fieldW / 105;
 
-var canvas, context;
+var div, canvasBkg, contextBkg, canvas, context;
    
    
 var players = [];
 
 function load() {
-    canvas = document.getElementById('soccerbot'),
-    context  = canvas.getContext('2d');
-  
+  div = document.getElementById('soccerbot');
+  canvasBkg = document.createElement('canvas');
+  canvasBkg.className = 'canvasSimu';
+  canvasBkg.width = defaults.fieldW;;
+  canvasBkg.height = defaults.fieldH;
+  contextBkg = canvasBkg.getContext('2d');
+  div.appendChild(canvasBkg);
+  canvas = document.createElement('canvas');
+  canvas.className = 'canvasSimu';
+  canvas.width = defaults.fieldW;;
+  canvas.height = defaults.fieldH;
+  context = canvas.getContext('2d');
+  div.appendChild(canvas);
 
      var player = {
        x: 100,
@@ -27,20 +37,25 @@ function load() {
      };
      
      players.push(player);
+     
+    renderBackground();
     window.requestAnimationFrame(tick);
+}
+
+function renderBackground() {
+  drawField(contextBkg);
 }
 
 function tick() {
   window.requestAnimationFrame(tick);
   context.clearRect(0, 0, defaults.fieldW, defaults.fieldH);
-  drawField()
   players.forEach(function(player) {
     player.step();
     drawPlayer(player);
   });
 }
 
-function drawField() {
+function drawField(cont) {
   var radiusCenter = parseInt(defaults.fieldW/10);
   var goalSize = {
     w: 7.3 * defaults.ratioPixel,
@@ -57,30 +72,28 @@ function drawField() {
   
   var halfSeizeH = halfHeight - seizemSize.h / 2;
   
-  canvas.width = defaults.fieldW;
-  canvas.height = defaults.fieldH;
-  context.fillStyle = defaults.fieldColor ;
-  context.fillRect(0,0,defaults.fieldW, defaults.fieldH);
+  cont.fillStyle = defaults.fieldColor ;
+  cont.fillRect(0,0,defaults.fieldW, defaults.fieldH);
  
-  context.strokeStyle = '#fff' ;
-  context.lineWidth = 2;
+  cont.strokeStyle = '#fff' ;
+  cont.lineWidth = 2;
 
-  context.beginPath();
-  context.moveTo(halfWidth, 0);
-  context.lineTo(halfWidth, defaults.fieldH);
-  context.stroke();
+  cont.beginPath();
+  cont.moveTo(halfWidth, 0);
+  cont.lineTo(halfWidth, defaults.fieldH);
+  cont.stroke();
   
-  context.beginPath();
-  context.arc(halfWidth, halfHeight, radiusCenter, 0, 2 * Math.PI);
-  context.stroke();
+  cont.beginPath();
+  cont.arc(halfWidth, halfHeight, radiusCenter, 0, 2 * Math.PI);
+  cont.stroke();
   
-  context.beginPath();
-  context.rect(0,halfSeizeH,seizemSize.w, seizemSize.h);
-  context.stroke();
+  cont.beginPath();
+  cont.rect(0,halfSeizeH,seizemSize.w, seizemSize.h);
+  cont.stroke();
   
-  context.beginPath();
-  context.rect(defaults.fieldW - seizemSize.w,halfSeizeH,seizemSize.w, seizemSize.h);
-  context.stroke();
+  cont.beginPath();
+  cont.rect(defaults.fieldW - seizemSize.w,halfSeizeH,seizemSize.w, seizemSize.h);
+  cont.stroke();
 }
 
 function drawPlayer (player){    
