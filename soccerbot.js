@@ -21,21 +21,21 @@ var lastTick;
 function load() {
   div = document.getElementById('soccerbot');
   canvasBkg = document.createElement('canvas');
-  canvasBkg.className = 'canvasSimu';
   canvasBkg.width = defaults.screenW;;
   canvasBkg.height = defaults.screenH;
   contextBkg = canvasBkg.getContext('2d');
-  div.appendChild(canvasBkg);
-  canvas = document.createElement('canvas');
-  canvas.className = 'canvasSimu';
-  canvas.width = defaults.screenW;;
-  canvas.height = defaults.screenH;
-  context = canvas.getContext('2d');
-  div.appendChild(canvas);
   canvasBuffer = document.createElement('canvas');
   canvasBuffer.width = defaults.screenW;
   canvasBuffer.height = defaults.screenH;
   contextBuffer = canvasBuffer.getContext('2d');
+  
+  // Draw canvas
+  canvas = document.createElement('canvas');
+  canvas.className = 'canvasGame';
+  canvas.width = defaults.screenW;;
+  canvas.height = defaults.screenH;
+  context = canvas.getContext('2d');
+  div.appendChild(canvas);
 
      var player = {
        x: 100,
@@ -43,7 +43,19 @@ function load() {
        color: 'blue',
        radius: 7,
        step : function() {
-         this.x++;
+         //this.x++;
+         return {
+           x : this.x +1,
+           y : this.y
+         }
+       },
+       apply : function(instruction) {
+         if(instruction.x) {
+           this.x = instruction.x;
+         }
+         if(instruction.x) {
+           this.y = instruction.y;
+         }         
        }
      };
      
@@ -75,12 +87,16 @@ function tick() {
   contextBuffer.clearRect(0, 0, defaults.screenW, defaults.screenH);
   items.forEach(function(item) {
     if (item.step) {
-      item.step(delta); 
+      var res = item.step(delta);
+      if(res) {
+        item.apply(res);
+      }
     }
     drawItem(item, contextBuffer);
   });
   
   context.clearRect(0, 0, defaults.screenW, defaults.screenH);
+  context.drawImage(canvasBkg, 0, 0);
   context.drawImage(canvasBuffer, 0, 0);
 }
 
