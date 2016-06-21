@@ -1,20 +1,13 @@
-define(['./renderer', './physic', './item'], function(renderer, physic, item) {
+define(['./renderer', './physic', './item', './field', './ia'], function(renderer, physic, item, field, ia) {
    var game = {
        start: function() {
            physic.start();
            lastTick = Date.now();
            
-           for(var i = 0; i < 10; i++) {
-            var color = "#FF0000";
-            if (i < 5) {
-                color = "#0000FF";
-            }
-            
-            var item1 = new item(Math.random() * 100,Math.random() * 100, 10, color);
-            items.push(item1);    
-           }
+           var player = new item(100, 100, 10, "#FF0000");
+            items.push(player);
            
-           var ball = new item(Math.random() * 100,Math.random() * 100, 10, "#FFFFFF");
+           var ball = new item(field.screenW / 2,field.screenH / 2, 10, "#FFFFFF");
             items.push(ball);    
            
            window.requestAnimationFrame(tick);

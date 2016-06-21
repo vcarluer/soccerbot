@@ -25,7 +25,7 @@ define(['./physic'], function(physic) {
      this.body.SetAwake(1);
      this.body.SetActive(1);
      
-     this.body.ApplyLinearImpulse(new Box2D.b2Vec2(Math.random() * 10 - 5, Math.random() * 10 - 5), this.body.GetPosition(), true);
+     // this.body.ApplyLinearImpulse(new Box2D.b2Vec2(Math.random() * 10 - 5, Math.random() * 10 - 5), this.body.GetPosition(), true);
 
      this.step = function(delta) {
         this.x = this.body.GetPosition().get_x() / physic.worldRatio;
