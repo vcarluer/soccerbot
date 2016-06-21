@@ -16,7 +16,9 @@ var div, canvasBkg, contextBkg, canvas, context, canvasBuffer, contextBuffer;
 var players = [];
 var ball;
 var items = [];
+var ia = [];
 var lastTick;
+var game = {};
 
 function load() {
   div = document.getElementById('soccerbot');
@@ -42,25 +44,59 @@ function load() {
        y: 100,
        color: 'blue',
        radius: 7,
-       step : function() {
-         //this.x++;
-         return {
-           moveTo :  {
-            x : this.x +1,
-            y : this.y
+       ia: {},
+       startPos: null,
+       targetPos: null,
+       speed: 100,
+       step : function(delta) {
+         if (this.targetPos &&
+         this.startPos &&
+         (this.x !== this.targetPos.x || this.y !== this.targetPos.y)) {
+           var deltaX = (this.targetPos.x - this.startPos.x) / this.speed;
+           var deltaY = (this.targetPos.y - this.startPos.y) / this.speed;
+           
+           this.x += deltaX;
+           this.y += deltaY;
+           
+           if (this.y === this.targetPos.y) {
+             this.startPos = null;
+             this.targetPos = null;
            }
          }
+         
+         return this.ia.step(this, game);
        },
        apply : function(instruction) {
-         if(instruction.moveTo) {
-           this.x = instruction.moveTo.x;
-           this.y = instruction.moveTo.y;
+         if(instruction.action === 'moveTo') {
+           this.startPos = {
+             x: this.x,
+             y: this.y
+           };
+           
+           this.targetPos = {
+             x: instruction.target.x,
+             y: instruction.target.y
+           };
+         }
+       },
+       moveTo: function(position) {
+          return {
+           action: 'moveTo',
+           target: position
          }
        }
      };
      
      players.push(player);
      items.push(player);
+     
+     var ia1 = {
+       step: function(me, game) {
+        return me.moveTo(game.ball);
+       }
+     };
+     
+     player.ia = ia1;
      
      ball = {
        x: defaults.screenW / 2,
@@ -70,6 +106,9 @@ function load() {
      }
      
      items.push(ball);
+     
+     
+    game.ball = ball;
      
     renderBackground();
     lastTick = Date.now();
