@@ -4,8 +4,18 @@ define(['./renderer', './physic', './item'], function(renderer, physic, item) {
            physic.start();
            lastTick = Date.now();
            
-           var item1 = new item(100,100, 10, "#FF0000");
-           items.push(item1);
+           for(var i = 0; i < 10; i++) {
+            var color = "#FF0000";
+            if (i < 5) {
+                color = "#0000FF";
+            }
+            
+            var item1 = new item(Math.random() * 100,Math.random() * 100, 10, color);
+            items.push(item1);    
+           }
+           
+           var ball = new item(Math.random() * 100,Math.random() * 100, 10, "#FFFFFF");
+            items.push(ball);    
            
            window.requestAnimationFrame(tick);
        }
