@@ -3,7 +3,8 @@ var defaults = {
   fieldW : 600,
   fieldH : null,
   fieldColor : 'green',
-  goalW: 10
+  goalW: 10,
+  worldRatio: 50
 };
 defaults.fieldH =  defaults.fieldW * defaults.fieldRatio;
 defaults.ratioPixel = defaults.fieldW / 105;
@@ -20,7 +21,6 @@ var ia = [];
 var lastTick;
 var game = {};
 var world;
-var bodies = [];
 
 function load() {
   div = document.getElementById('soccerbot');
@@ -61,8 +61,6 @@ function load() {
     body.SetAwake(1);
     body.SetActive(1);
     body.SetLinearDamping(0.001);
-    
-    bodies.push(body);
   
   // Game items
      var player = {
@@ -77,25 +75,6 @@ function load() {
        body: null,
        first : false,
        step : function(delta) {
-         /*if (this.targetPos &&
-         this.startPos &&
-         (this.x !== this.targetPos.x || this.y !== this.targetPos.y)) {
-           var deltaX = (this.targetPos.x - this.startPos.x) / this.speed;
-           var deltaY = (this.targetPos.y - this.startPos.y) / this.speed;
-           
-           this.x += deltaX;
-           this.y += deltaY;
-           
-           if (this.y === this.targetPos.y) {
-             this.startPos = null;
-             this.targetPos = null;
-           }
-         }*/
-         if(this.targetPos) {
-          this.x += this.targetPos.deltaX;
-          this.y += this.targetPos.deltaY;
-         }
-          
          return this.ia.step(this, game);
        },
        apply : function(instruction) {
