@@ -12,6 +12,6 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['app/game', 'Box2D_v2.3.1_min'], function (game, Box2D) {
-    game.start(Box2D);
+requirejs(['app/game'], function (game) {
+    game.start();
 });

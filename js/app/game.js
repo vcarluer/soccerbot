@@ -1,12 +1,12 @@
 define(['./renderer', './physic', './item'], function(renderer, physic, item) {
    var game = {
-       start: function(Box2D) {
-           // physic.start(Box2D);
+       start: function() {
+           physic.start();
            lastTick = Date.now();
            
-           /*var item1 = new item(100,100, 10, "#FF0000");
+           var item1 = new item(100,100, 10, "#FF0000");
            items.push(item1);
-           */
+           
            window.requestAnimationFrame(tick);
        }
    };
@@ -20,7 +20,7 @@ define(['./renderer', './physic', './item'], function(renderer, physic, item) {
     renderer.startLoop();
     
     items.forEach(function(item) {
-        // physic.step(delta);
+        physic.step(delta);
         item.step(delta);
         renderer.item(item); 
     });
