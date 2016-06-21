@@ -19,6 +19,8 @@ var items = [];
 var ia = [];
 var lastTick;
 var game = {};
+var world;
+var bodies = [];
 
 function load() {
   div = document.getElementById('soccerbot');
@@ -38,18 +40,44 @@ function load() {
   canvas.height = defaults.screenH;
   context = canvas.getContext('2d');
   div.appendChild(canvas);
-
+  
+  // Box2D
+  // Box2D-interfacing code
+  
+  var ZERO = new Box2D.b2Vec2(0, 0);
+  // var gravity = new Box2D.b2Vec2(0.0, -10.0);
+  world = new Box2D.b2World(ZERO);
+  
+  var cshape = new Box2D.b2CircleShape();
+  cshape.set_m_radius(0.5);
+  
+    var temp = new Box2D.b2Vec2(0, 0);
+    var bd = new Box2D.b2BodyDef();
+    // bd.set_type(b2_dynamicBody);
+    bd.set_type(Box2D.b2_dynamicBody);
+    bd.set_position(new Box2D.b2Vec2(100, 100));
+    var body = world.CreateBody(bd);
+    body.CreateFixture(cshape, 1.0);
+    body.SetAwake(1);
+    body.SetActive(1);
+    body.SetLinearDamping(0.001);
+    
+    bodies.push(body);
+  
+  // Game items
      var player = {
-       x: 100,
-       y: 100,
+       x: 0,
+       y: 0,
        color: 'blue',
        radius: 7,
        ia: {},
-       startPos: null,
+       //startPos: null,
        targetPos: null,
        speed: 100,
+       body: null,
+       first : false,
        step : function(delta) {
-         if (this.targetPos &&
+         /*if (this.targetPos &&
          this.startPos &&
          (this.x !== this.targetPos.x || this.y !== this.targetPos.y)) {
            var deltaX = (this.targetPos.x - this.startPos.x) / this.speed;
@@ -62,31 +90,29 @@ function load() {
              this.startPos = null;
              this.targetPos = null;
            }
+         }*/
+         if(this.targetPos) {
+          this.x += this.targetPos.deltaX;
+          this.y += this.targetPos.deltaY;
          }
-         
+          
          return this.ia.step(this, game);
        },
        apply : function(instruction) {
-         if(instruction.action === 'moveTo') {
-           this.startPos = {
-             x: this.x,
-             y: this.y
-           };
-           
-           this.targetPos = {
-             x: instruction.target.x,
-             y: instruction.target.y
-           };
+         if(instruction.action === 'moveTo' && !this.first) {
+           this.first = true;
+           this.body.ApplyLinearImpulse(new Box2D.b2Vec2(10, 50), this.body.GetPosition(), true);
          }
        },
        moveTo: function(position) {
           return {
            action: 'moveTo',
            target: position
-         }
+         };
        }
      };
      
+     player.body = body;
      players.push(player);
      items.push(player);
      
@@ -112,6 +138,8 @@ function load() {
      
     renderBackground();
     lastTick = Date.now();
+    
+    
     window.requestAnimationFrame(tick);
 }
 
@@ -123,6 +151,9 @@ function tick() {
   window.requestAnimationFrame(tick);
   var delta = Date.now() - lastTick;
   lastTick = Date.now();
+  
+  
+  world.Step(delta, 2, 2);
   contextBuffer.clearRect(0, 0, defaults.screenW, defaults.screenH);
   items.forEach(function(item) {
     if (item.step) {
@@ -131,6 +162,13 @@ function tick() {
         item.apply(res);
       }
     }
+    
+    item.x =bodies[0].GetPosition().get_x();
+    item.y = bodies[0].GetPosition().get_y();
+    
+    console.log(item.x);
+    console.log(item.y);
+    
     drawItem(item, contextBuffer);
   });
   
