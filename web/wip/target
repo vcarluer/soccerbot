@@ -1,3 +1,10 @@
+player.body.ApplyLinearImpulse(
+                new Box2D.b2Vec2(Math.random() * 10 - 5, Math.random() * 10 - 5),
+                player.body.GetPosition(), true);
+
+
+
+
 Création de comportement de joueurs
 Affectation des comportements aux joueurs d'un match
 Résolution du match
@@ -40,3 +47,8 @@ Faire un appel
 
 == Dessin ==
 canvas 2d
+
+
+
+
+

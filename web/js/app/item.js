@@ -1,4 +1,4 @@
-define(['./physic'], function(physic) {
+define(['./physic', './api'], function(physic, api) {
    function Item(x, y, radius, color) {
      this.radius = radius;
      this.color = color;
@@ -32,7 +32,7 @@ define(['./physic'], function(physic) {
         this.y = this.body.GetPosition().get_y() / physic.worldRatio;
         
         if (this.ia) {
-            this.ia.step(this, delta);
+            this.ia.step(this, api);
         }
      }
    }
