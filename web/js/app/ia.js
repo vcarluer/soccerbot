@@ -4,7 +4,9 @@ define(['./api'], function(api) {
     playBut.onclick = function() {
         try {
             var instructions = new Function(text.value);      
-            instructions();
+            api.items[0].step = function(api) {
+                instructions(api);
+            }
         } catch(ex) {
             console.log(ex)
         }
@@ -16,8 +18,8 @@ define(['./api'], function(api) {
         this.memory =  {};
         this.player = player;
         this.player.ia = this;
+        
         this.step = function() {
-            api.moveTo(this.player, api.ball);
         }
     };
     

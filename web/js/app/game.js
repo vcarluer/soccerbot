@@ -7,6 +7,8 @@ define(['./renderer', './physic', './item', './field', './ia', './api'], functio
            var player = new item(100, 100, 10, "#FF0000");
            new ia(player);
             items.push(player);
+            
+            api.items = items;
            
            var ball = new item(field.screenW / 2,field.screenH / 2, 10, "#FFFFFF");
             items.push(ball);    

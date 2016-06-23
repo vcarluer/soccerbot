@@ -1,4 +1,4 @@
-var restify = require(restify)
+//var restify = require(restify)
 module.exports = {
     list : function (req, res, next) {
         res.send([{
@@ -27,10 +27,10 @@ module.exports = {
     },
     add : function (req, res, next) {
         res.send({
-            id:req.params.id,
-            name:'tata',
-            author:'toi',
-            behavior:'la balb a'
+            id:'666',
+            name:req.params.name || 'null',
+            author:req.params.author || 'null',
+            behavior:req.params.behavior || 'null'
         })
         
         return next()
@@ -38,12 +38,14 @@ module.exports = {
     setById : function (req, res, next) {
         
         
-        return next(new restify.NotImplementedError)
+        //return next(new restify.NotImplementedError)
+        return next()
     },
     deleteById : function (req, res, next) {
         
         
-        return next(new restify.NotImplementedError)
+        //return next(new restify.NotImplementedError)
+        return next()
     }
 
     
