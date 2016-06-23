@@ -1,15 +1,16 @@
-define(['./renderer', './physic', './item', './field', './ia'], function(renderer, physic, item, field, ia) {
+define(['./renderer', './physic', './item', './field', './ia', './api'], function(renderer, physic, item, field, ia, api) {
    var game = {
        start: function() {
            physic.start();
            lastTick = Date.now();
            
            var player = new item(100, 100, 10, "#FF0000");
-           player.ia = new ia();
+           new ia(player);
             items.push(player);
            
            var ball = new item(field.screenW / 2,field.screenH / 2, 10, "#FFFFFF");
             items.push(ball);    
+            api.ball = ball;
            
            window.requestAnimationFrame(tick);
        }
@@ -22,6 +23,7 @@ define(['./renderer', './physic', './item', './field', './ia'], function(rendere
     var delta = Date.now() - lastTick;
     lastTick = Date.now();
     renderer.startLoop();
+    api.startLoop();
     
     items.forEach(function(item) {
         physic.step(delta);

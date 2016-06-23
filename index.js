@@ -21,6 +21,22 @@ server.use(restify.bodyParser( {mapParams : true} ))
    return next();
  });
  
+*/
+
+var ia = require('./controllers/ia')
+
+server.get('/api/ia', ia.list) 
+server.post('/api/ia', ia.add)
+server.get('/api/ia/:id', ia.getById) 
+ 
+server.put('/api/ia/:id', ia.setById) 
+server.del('/api/ia/:id', ia.deleteById) 
+ 
+//redirect every request that does not begin with /api/ to the static folder
+server.get(/^(?!\/api\/).*/, restify.serveStatic({
+    'directory': 'web',
+    'default': 'index.html'
+ }))
 server.listen(8081, function(){
  console.log("Server listening on port 8081 !")
-})*/
+})
