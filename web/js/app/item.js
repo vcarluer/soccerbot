@@ -13,7 +13,7 @@ define(['./physic'], function(physic) {
         fixtureDef.set_density(2.5);
         fixtureDef.set_friction(0.6);
         fixtureDef.set_shape(cshape);
-        fixtureDef.set_restitution(1.0);
+        fixtureDef.set_restitution(0.1);
      
      var bd = new Box2D.b2BodyDef();
      bd.set_type(Box2D.b2_dynamicBody);
@@ -30,6 +30,10 @@ define(['./physic'], function(physic) {
      this.step = function(delta) {
         this.x = this.body.GetPosition().get_x() / physic.worldRatio;
         this.y = this.body.GetPosition().get_y() / physic.worldRatio;
+        
+        if (this.ia) {
+            this.ia.step(this, delta);
+        }
      }
    }
    

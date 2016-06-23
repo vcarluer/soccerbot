@@ -11,4 +11,15 @@ define(function() {
       
       
     };
+    
+    function ia() {
+        memory =  {};
+        this.step = function(player, delta) {
+            player.body.ApplyLinearImpulse(
+                new Box2D.b2Vec2(Math.random() * 10 - 5, Math.random() * 10 - 5),
+                player.body.GetPosition(), true);
+        }
+    };
+    
+    return ia;
 })
