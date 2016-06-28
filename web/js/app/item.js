@@ -1,5 +1,5 @@
 define(['./physic', './api'], function(physic, api) {
-   function Item(x, y, radius, color) {
+   function Item(x, y, radius, color, density, friction, restitution) {
      this.radius = radius;
      this.color = color;
      this.x = x;
@@ -10,10 +10,10 @@ define(['./physic', './api'], function(physic, api) {
      var cshape = new Box2D.b2CircleShape();
      cshape.set_m_radius(this.radius * physic.worldRatio);
      var fixtureDef = new Box2D.b2FixtureDef();
-        fixtureDef.set_density(2.5);
-        fixtureDef.set_friction(0.6);
+        fixtureDef.set_density(density || 1);
+        fixtureDef.set_friction(friction || 0.6);
         fixtureDef.set_shape(cshape);
-        fixtureDef.set_restitution(0.1);
+        fixtureDef.set_restitution(restitution || 0.1);
      
      var bd = new Box2D.b2BodyDef();
      bd.set_type(Box2D.b2_dynamicBody);

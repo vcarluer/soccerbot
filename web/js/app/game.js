@@ -4,15 +4,15 @@ define(['./renderer', './physic', './item', './field', './ia', './api'], functio
            physic.start();
            lastTick = Date.now();
            
-           var player = new item(100, 100, 10, "#FF0000");
+           var player = new item(100, 100, 10, "#FF0000", 1, 0.8, 0.05);
            new ia(player);
             this.items.push(player);
             
             api.items = this.items;
            
-           var ball = new item(field.screenW / 2,field.screenH / 2, 10, "#FFFFFF");
+           var ball = new item(field.screenW / 2,field.screenH / 2, 10, "#FFFFFF", 1, 0.1, 0.5);
             this.items.push(ball);    
-            api.ball = ball;
+            api.ball = ball.getAlias();
            
            window.requestAnimationFrame(tick);
        },

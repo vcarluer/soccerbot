@@ -54,25 +54,47 @@ module.exports = {
         return next()
     },
     add : function (req, res, next) {
-        res.send({
-            id:'666',
+        var newIa = {
+            ia: uuid.v1(),
             name:req.params.name || 'null',
             author:req.params.author || 'null',
-            behavior:req.params.behavior || 'null'
-        })
+            behavior:req.params.behavior || 'null'            
+        }
+        iaData.push(newIa)
+        res.send(newIa)
         
         return next()
     },
     setById : function (req, res, next) {
-        
-        
-        //return next(new restify.NotImplementedError)
+        var iaToUpdate
+        for(var i=0, len = iaData.length, i < len, i++) {
+            if(iaData.id === req.params.id) {
+                if(req.params.name) {
+                    item.name = req.params.name
+                }     
+                if(req.behavior.name) {
+                    item.behavior = req.behavior.name
+                }  
+                res.send(iaToUpdate)
+                break
+                
+            }
+        }
+
         return next()
     },
     deleteById : function (req, res, next) {
         
-        
-        //return next(new restify.NotImplementedError)
+        var deleted = 0,
+            idxToDelete = iaData.findIndex(function(item) {
+                return item.id === req.params.id
+            })
+            
+        if(idxToDelete >= 0) {
+            iaData.splice(idxToDelete, 1)
+            deleted = 1
+        }
+        res.send ({ deleted : deleted })
         return next()
     }
 
