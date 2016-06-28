@@ -23,7 +23,7 @@ server.use(restify.bodyParser( {mapParams : true} ))
  
 */
 
-var ia = require('./controllers/ia')
+var ia = require('./controllers/ia')(restify)
 
 server.get('/api/ia', ia.list) 
 server.post('/api/ia', ia.add)

@@ -1,9 +1,10 @@
 define(['./physic', './api'], function(physic, api) {
-   function Item(x, y, radius, color, density, friction, restitution) {
+   function Item(id, x, y, radius, color, density, friction, restitution) {
      this.radius = radius;
      this.color = color;
      this.x = x;
      this.y = y;
+     this.id = id;
      
      var Box2D = physic.Box2D;
      
@@ -44,6 +45,10 @@ define(['./physic', './api'], function(physic, api) {
         
         var alias =  
          {
+            get id() {
+                return self.id;
+            },
+             
             get x() {
                 return self.x;
             },
@@ -54,6 +59,10 @@ define(['./physic', './api'], function(physic, api) {
             
             moveTo: function(target) {
                 api.moveTo(self, target);
+            },
+            
+            tryShoot: function(target) {
+                api.tryShoot(self, api.ball.id, target);
             }
          };
           
