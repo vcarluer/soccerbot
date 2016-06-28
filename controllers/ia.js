@@ -1,4 +1,6 @@
 //var restify = require(restify)
+var jsonBlobUrl = 'http://jsonblob.com/57725733e4b01190df7ca1fd'
+
 module.exports = {
     list : function (req, res, next) {
         res.send([{

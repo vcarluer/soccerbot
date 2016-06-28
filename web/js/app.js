@@ -8,7 +8,8 @@ requirejs.config({
     //the paths config could be for a directory.
     paths: {
         app: '../app'
-    }
+    },
+    urlArgs: "bust=" + (new Date()).getTime()
 });
 
 // Start the main app logic.

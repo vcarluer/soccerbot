@@ -32,9 +32,34 @@ define(['./physic', './api'], function(physic, api) {
         this.y = this.body.GetPosition().get_y() / physic.worldRatio;
         
         if (this.ia) {
-            this.ia.step(this, api);
+            this.ia.step(
+                this.getAlias()
+                , api.ball,
+                api);
         }
+     };
+     
+     this.getAlias = function() {
+         var self = this;
+        
+        var alias =  
+         {
+            get x() {
+                return self.x;
+            },
+            
+            get y() {
+                return self.y;
+            },
+            
+            moveTo: function(target) {
+                api.moveTo(self, target);
+            }
+         };
+          
+         return alias;
      }
+     
    }
    
    return Item;

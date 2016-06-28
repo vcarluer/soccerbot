@@ -3,8 +3,7 @@ define(['./api'], function(api) {
     var playBut = document.getElementById('sendInstruction');
     playBut.onclick = function() {
         try {
-            var player = api.items[0];
-            var instructions = new Function('player', 'api', text.value);      
+            var instructions = new Function('me', 'ball', 'api', text.value);      
             api.items[0].ia.step = instructions;
         } catch(ex) {
             console.log(ex)
@@ -18,7 +17,7 @@ define(['./api'], function(api) {
         this.player = player;
         this.player.ia = this;
         
-        this.step = function(player, api) {
+        this.step = function(me, ball, api) {
         }
     };
     
