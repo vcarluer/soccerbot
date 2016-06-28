@@ -13,6 +13,6 @@ requirejs.config({
 });
 
 // Start the main app logic.
-requirejs(['app/game'], function (game) {
+requirejs(['app/game', 'app/guiControllers'], function (game, controllers) {
     game.start();
 });

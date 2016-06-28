@@ -6,19 +6,20 @@ define(['./renderer', './physic', './item', './field', './ia', './api'], functio
            
            var player = new item(100, 100, 10, "#FF0000");
            new ia(player);
-            items.push(player);
+            this.items.push(player);
             
-            api.items = items;
+            api.items = this.items;
            
            var ball = new item(field.screenW / 2,field.screenH / 2, 10, "#FFFFFF");
-            items.push(ball);    
+            this.items.push(ball);    
             api.ball = ball;
            
            window.requestAnimationFrame(tick);
-       }
+       },
+       items: []
    };
    
-   var lastTick, items = [];
+   var lastTick;
    
    function tick() {    
     window.requestAnimationFrame(tick);
@@ -27,7 +28,7 @@ define(['./renderer', './physic', './item', './field', './ia', './api'], functio
     renderer.startLoop();
     api.startLoop();
     
-    items.forEach(function(item) {
+    game.items.forEach(function(item) {
         physic.step(delta);
         item.step(delta);
         renderer.item(item); 
